@@ -981,6 +981,11 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 		if (beanDefinition instanceof AbstractBeanDefinition) {
 			try {
+				/**
+				 * 注册前的最后一次校验，这里的校验不同于之前的xml文件校验，
+				 * 主要是对于AbstractBeanDefinition属性中的methodOverrides校验
+				 * 校验methodOverrides是否与工厂方法并存或者methodOverrides对应的方法根本不存在
+				 */
 				((AbstractBeanDefinition) beanDefinition).validate();
 			}
 			catch (BeanDefinitionValidationException ex) {
@@ -988,9 +993,10 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 						"Validation of bean definition failed", ex);
 			}
 		}
-
+		//对比现存的beanDefinition
 		BeanDefinition existingDefinition = this.beanDefinitionMap.get(beanName);
 		if (existingDefinition != null) {
+			//是否允许bean重复定义
 			if (!isAllowBeanDefinitionOverriding()) {
 				throw new BeanDefinitionOverrideException(beanName, beanDefinition, existingDefinition);
 			}
@@ -1019,9 +1025,12 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			this.beanDefinitionMap.put(beanName, beanDefinition);
 		}
 		else {
+			//检查这个工厂的 bean 创建阶段是否已经开始，即在此期间是否有任何 bean 被标记为已创建。
 			if (hasBeanCreationStarted()) {
 				// Cannot modify startup-time collection elements anymore (for stable iteration)
+				//beanDefinitionMap全局变量，解决并发冲突的情况。
 				synchronized (this.beanDefinitionMap) {
+					//这就是注册
 					this.beanDefinitionMap.put(beanName, beanDefinition);
 					List<String> updatedDefinitions = new ArrayList<>(this.beanDefinitionNames.size() + 1);
 					updatedDefinitions.addAll(this.beanDefinitionNames);
@@ -1032,14 +1041,18 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			}
 			else {
 				// Still in startup registration phase
+				//任处于注册启动阶段
+				//这就是注册
 				this.beanDefinitionMap.put(beanName, beanDefinition);
 				this.beanDefinitionNames.add(beanName);
+				//删除手动注册的bean，xml解析的优先级更高？？？
 				removeManualSingletonName(beanName);
 			}
 			this.frozenBeanDefinitionNames = null;
 		}
 
 		if (existingDefinition != null || containsSingleton(beanName)) {
+			//重置bean定义信息
 			resetBeanDefinition(beanName);
 		}
 		else if (isConfigurationFrozen()) {

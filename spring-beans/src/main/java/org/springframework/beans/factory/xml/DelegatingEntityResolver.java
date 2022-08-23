@@ -84,9 +84,12 @@ public class DelegatingEntityResolver implements EntityResolver {
 
 		if (systemId != null) {
 			if (systemId.endsWith(DTD_SUFFIX)) {
+				//如果是dtd从这里解析，具体交给BeansDtdResolver来干
 				return this.dtdResolver.resolveEntity(publicId, systemId);
 			}
 			else if (systemId.endsWith(XSD_SUFFIX)) {
+				//xsd从这里解析，具体交给PluggableSchemaResolver来干，寻找文件META-INF/Spring.schemas找systemid对应的xsd解析。
+				//根据http://这种网址取到对应关系，然后去org/springframework/beans/factory/xml/这个路径寻找本地文件。
 				return this.schemaResolver.resolveEntity(publicId, systemId);
 			}
 		}

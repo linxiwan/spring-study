@@ -1,7 +1,5 @@
 package com.lq.circulardependency;
 
-import com.lq.circulardependency.entity.A;
-import com.lq.circulardependency.entity.B;
 import com.lq.circulardependency.entity.Person;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
@@ -16,11 +14,14 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class Main {
 
 	public static void main(String[] args) {
-//		AbstractApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext.xml");
-		AbstractApplicationContext bd = new ClassPathXmlApplicationContext("applicationContext-${username}.xml");
-		Person p = bd.getBean(Person.class);
-		ApplicationContext ac = p.getAc();
-		System.out.println(ac);
+		AbstractApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext.xml");
+//		AbstractApplicationContext bd = new ClassPathXmlApplicationContext("applicationContext-${username}.xml");
+		Person p = ac.getBean(Person.class);
+//		ApplicationContext ac = p.getAc();
+//		System.out.println(ac);
+
+
+//		new XmlBeanFactory()
 
 //		A a = bd.getBean(A.class);
 //		B b = bd.getBean(B.class);

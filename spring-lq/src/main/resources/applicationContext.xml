@@ -8,10 +8,13 @@
 <!--		<property name="age" value="12"></property>-->
 <!--	</bean>-->
 
-		<bean id="A" class="com.lq.circulardependency.entity.A" init-method="show">
+	<beans profile="development">
+		<bean id="A"  name="&a"  class="com.lq.circulardependency.entity.A" init-method="show">
 			<property name="b" ref="B"></property>
 		</bean>
 		<bean id="B" class="com.lq.circulardependency.entity.B" init-method="show">
 			<property name="a" ref="A"></property>
 		</bean>
+	</beans>
+
 </beans>
