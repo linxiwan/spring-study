@@ -1,19 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
 
 <!--	<bean id="A" class="com.lq.test.entity.A">-->
 <!--		<property name="name" value="linqian"></property>-->
 <!--		<property name="age" value="12"></property>-->
 <!--	</bean>-->
 
+	<aop:aspectj-autoproxy/>
 	<beans profile="development">
-		<bean id="A"  name="&a"  class="com.lq.circulardependency.entity.A" init-method="show">
-			<property name="b" ref="B"></property>
-		</bean>
-		<bean id="B" class="com.lq.circulardependency.entity.B" init-method="show">
-			<property name="a" ref="A"></property>
+<!--		<bean id="A"  name="a"  class="com.lq.circulardependency.entity.A" init-method="show">-->
+<!--			<property name="b" ref="B"></property>-->
+<!--		</bean>-->
+<!--		<bean id="B" class="com.lq.circulardependency.entity.B" init-method="show">-->
+<!--			<property name="a" ref="A"></property>-->
+<!--		</bean>-->
+
+<!--		<bean id ="bfpp" name="bfpp" class="com.lq.circulardependency.MyBeanFactoryPostProcessor"/>-->
+		<bean id="person" name="person" class="com.lq.circulardependency.entity.Person">
+			<property name="age" value="18"/>
+			<property name="name" value="linqian"/>
 		</bean>
 	</beans>
 
