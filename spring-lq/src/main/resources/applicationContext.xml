@@ -9,19 +9,7 @@
 <!--	</bean>-->
 
 	<aop:aspectj-autoproxy/>
-	<beans profile="development">
-<!--		<bean id="A"  name="a"  class="com.lq.circulardependency.entity.A" init-method="show">-->
-<!--			<property name="b" ref="B"></property>-->
-<!--		</bean>-->
-<!--		<bean id="B" class="com.lq.circulardependency.entity.B" init-method="show">-->
-<!--			<property name="a" ref="A"></property>-->
-<!--		</bean>-->
-
-<!--		<bean id ="bfpp" name="bfpp" class="com.lq.circulardependency.MyBeanFactoryPostProcessor"/>-->
-		<bean id="person" name="person" class="com.lq.circulardependency.entity.Person">
-			<property name="age" value="18"/>
-			<property name="name" value="linqian"/>
-		</bean>
-	</beans>
+	<bean id="testSequence" name="testSequence" class="com.lq.circulardependency.aop.testSequence" init-method="init"/>
+	<bean class="com.lq.circulardependency.aop.MyBeanPostProcessor"></bean>
 
 </beans>
